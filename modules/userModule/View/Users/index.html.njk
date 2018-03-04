@@ -1,0 +1,24 @@
+{% extends "Resource/base.html.njk" %}
+
+{% block title %}Chats Page{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="/public/css/user.css">
+{% endblock %}
+
+{% block body %}
+<div class="container bootstrap snippet">
+
+	<div class="tile tile-alt row" id="messages-main">
+		{# form #}
+		{% include "Users/Forms/create_form.html.njk" %}
+
+		{# cheat #}
+		{% include "Users/cheat.html.njk" %}
+    </div>{# #messages-main end #}
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+{% endblock %}

@@ -1,0 +1,20 @@
+#MongoDB Config
+mongoDB:
+    url: '%mongoDBUrl%'
+
+# Route Config
+routeAuth: 
+    notMember: 
+        '/user/': 'UsersRoute'
+        '/user/*': 'UsersRoute'
+    public: ~
+    # member: 
+    #     '/logout': 'LogoutRoute'
+    #     '/chats': 'ChatsRoute'
+    #     '/chats/*': 'ChatsRoute'
+
+containAuth: 
+    notMember: ['public']
+    # member: ['public']
+
+socketRoute: ~

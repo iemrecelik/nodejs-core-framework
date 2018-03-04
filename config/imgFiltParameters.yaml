@@ -1,0 +1,15 @@
+# GraphicsMagick Filter
+parameters:
+    gmFilter:
+        filters:
+            profileL:
+                resize: [128, 128, '!']
+                writePath: '/public/img/profile/L(128,128)'
+
+            profileS:
+                resize: [64, 64, '!']
+                writePath: '/public/img/profile/S(64,64)'
+                config:
+                    # size: 1000000
+                    # format: ['PNG']
+                    

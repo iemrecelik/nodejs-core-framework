@@ -1,0 +1,6 @@
+imports:
+    - { resources: '/config/imgFiltParameters.yaml'}
+
+parameters:
+    mongoDBUrl: 'mongodb://mongo:27017/coreExample'
+    cryptoSecretKey: 'chatsAndShares'

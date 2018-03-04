@@ -1,0 +1,22 @@
+users:
+    name: 
+        valid: 'matches'
+        params: ['^\s*([a-zA-Z]\s{0,1})+\s*$']
+        error: 'Lütfen sadece harf giriniz. Yada iki isim arasında sadece bir boşluk bırakınız.'
+        sanitizer:  
+            - {func: 'rtrim', params:[' ']}
+            - {func: 'ltrim', params:[' ']}
+    
+    surname: 
+        valid: 'matches'
+        params: ['^\s*([a-zA-Z]\s{0,1})+\s*$']
+        error: 'Lütfen sadece harf giriniz. Yada iki isim arasında sadece bir boşluk bırakınız.'
+        sanitizer:  
+            - {func: 'rtrim', params:[' ']}
+            - {func: 'ltrim', params:[' ']}
+
+    password: 
+        valid: 'matches'
+        params: ['.+']
+        error: 'Lütfen boş bırakmayınız.'
+    

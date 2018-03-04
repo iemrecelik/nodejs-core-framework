@@ -1,0 +1,24 @@
+# parameters:
+#     serviceParam1: 'serviceVal'
+#     serviceParam2: '%param1%'
+#     serviceParam3: '%serviceParam1%'
+#     serviceParam4: '%deneme2%'
+
+services: 
+    # for example
+    # runTest: #you will come  id's service name to here
+    #     path: socketModule/Service/runTest.js
+    #     arguments: 
+    #         - param3: [cake, apple, pear, cherry, '%deneme2%']
+    #         - param2: [cake, apple, pear, cherry]
+    ChatsFuncSnippets:
+        path: socketModule/Service/ChatsFuncSnippets.js
+    
+    SessionProcesses:
+        path: socketModule/Service/SessionProcesses.js
+    
+    SocketChats:
+        path: socketModule/Service/SocketChats.js
+
+    SocketCheckInAndOut:
+        path: socketModule/Service/SocketCheckInAndOut.js
