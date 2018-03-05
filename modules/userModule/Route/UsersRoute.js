@@ -10,25 +10,35 @@ const upload = multer({
 	// limits: { fileSize: 3000000 }
 }); // for parsing multipart/form-data
 
-let actionIndex = (req, res) => {usersCtrl.index(req, res)}
-	, actionUpdateSettings = (req, res) => {usersCtrl.updateSettings(req, res)}
-	, actionUpdateProfileImg = (req, res) => {usersCtrl.updateProfileImg(req, res)}
-	, actionCreateUser = (req, res) => {usersCtrl.createUser(req, res)};
+let index = (req, res) => {usersCtrl.index(req, res)}
+	, updateProfileImg = (req, res) => {usersCtrl.updateProfileImg(req, res)}
+	, createUser       = (req, res) => {usersCtrl.createUser(req, res)}
+	, createUserPost   = (req, res) => {usersCtrl.createUserPost(req, res)}
+	, updateUser       = (req, res) => {usersCtrl.updateUser(req, res)}
+	, updateUserPost   = (req, res) => {usersCtrl.updateUserPost(req, res)}
 
 let processes = {
-	'getIndexProc': [csrfProtection, actionIndex],
-	'postIndexProc': [csrfProtection, actionUpdateSettings],
-	'postCreateUserProc': [csrfProtection, actionCreateUser],
-	'postprImgUpProc': [upload.single('profileImg'), csrfProtection, actionUpdateProfileImg]
+	'index'           : [csrfProtection, index],
+	'createUser'      : [csrfProtection, createUser],
+	'createUserPost'  : [csrfProtection, createUserPost],
+	'updateUser'      : [csrfProtection, updateUser],
+	'updateUserPost'  : [csrfProtection, updateUserPost],
+	'updateProfileImg': [upload.single('uploadFile'), csrfProtection, updateProfileImg]
 }
 
 router.route('/')
-	.get(processes.getIndexProc)
-	.post(processes.postIndexProc);
+	.get(processes.index);
 
-router.post('/create-user', processes.postCreateUserProc);
+router.route('/create')
+	.get(processes.createUser)
+	.post(processes.createUserPost);
 
-router.post('/profile-img-up', processes.postprImgUpProc);
+// router.route(/.+\/update\/?$/)
+router.route('/:id/update')
+	.get(processes.updateUser)
+	.post(processes.updateUserPost);
+
+router.post('/:id/profile-img-up', processes.updateProfileImg);
 
 router.all('/', __defined.errorHandle);
 

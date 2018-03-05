@@ -5,6 +5,7 @@ const usersSchema = new Schema({
     name: {type: String, unique: true},
     surname: String,
     password: String,
+    profileImg: String,
     // user_id: { type: Schema.Types.ObjectId, unique: true },
 });
 

@@ -1,5 +1,4 @@
-const ChatSocket = require(__defined.moduleUrl + 'Sockets/ChatSocket.js')
-	, SocketCheckInAndOut = require(__defined.moduleUrl + 'Sockets/SocketCheckInAndOut.js');
+const TestConnect = require(__defined.moduleUrl + 'Sockets/TestConnect.js');
 
 
 module.exports = function({cookie, cookieParser, sessionStore, io}){
@@ -37,6 +36,5 @@ module.exports = function({cookie, cookieParser, sessionStore, io}){
 		sessionStoreDestroy: this.sessionStoreDestroy,
 	}
 
-	new ChatSocket(io, this.getSessionStore);
-	new SocketCheckInAndOut(io, sessStoreProcesses);
+	new TestConnect(io, sessStoreProcesses);
 }

@@ -1,0 +1,30 @@
+{% extends "Users/index.html.njk" %}
+
+{% block container %}
+
+	<br/>
+	<div class="error">
+		{# <pre>{{ validInfo|dump(2) }}</pre> #}
+		{{ validInfo.succeed }}
+
+		{% if validInfo.errorSt %}
+			<h5>Errors</h5>
+			<ul>
+			{% for field, err in validInfo.error %}
+			  <li><b>{{ field }}:  </b>{{ err }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	</div>
+	<form action="/user/create" method="post">
+		<label for="">Name :</label>
+		<input type="text" name="name" value="{{ validInfo.val.name }}"/><br/><br/>
+		<label for="">Surname :</label>
+		<input type="text" name="surname" value="{{ validInfo.val.surname }}"/><br/><br/>
+		<label for="">Password :</label>
+		<input type="password" name="password"/><br/><br/>
+		<input type="hidden" name="_csrf" value="{{csrfToken}}"/>
+		<input type="submit" value="Ekle">
+	</form>
+
+{% endblock %}

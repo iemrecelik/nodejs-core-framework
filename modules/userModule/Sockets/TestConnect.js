@@ -1,18 +1,24 @@
 module.exports = class testConnect{
-    constructor(io, getSessionStore){
-        
-        this.getSessionStore = getSessionStore;
+
+    constructor(io, sessStoreProcesses){
+
+        this.sessStoreProcesses = sessStoreProcesses;
 
         this.socketConnect(io);
     }
 
     async socketConnect(io){
 
-        io.on('connection', async (socket) => {
+        let chatNsp = io.of('/chats');
 
-            let session = await this.getSessionStore(socket)
+        chatNsp.on('connection', async (socket) => {
 
-            // console.log('session: ', session);
+            // let session = await this.sessStoreProcesses.getSessionStore(socket)
+
+            socket.on('takeMsg', (msg) => {
+                console.log(msg);
+                socket.broadcast.emit('sendMsg', msg);
+            })
 
             console.log('SOOOCKET ID : ', socket.id);
             console.log(' sockets :  - ' + Object.keys(io.sockets.sockets));

@@ -13,7 +13,7 @@ const flash = require('connect-flash')
     , nunjucks = require('nunjucks')
     , mongoDB = require(path.join(__defined.baseUrl , '/config/MongoDBConn.js'))
     , sessionStore = new session.MemoryStore({ reapInterval: 60000 * 10 })
-    // , SocketManager = require(path.join(__dirname, 'socketModule/Sockets/SocketManager.js'));
+    , SocketManager = require(path.join(__defined.moduleUrl, '/Sockets/SocketManager.js'));
 
 global.Controller = require(__defined.baseUrl + 'system/controller/Controller.js');
 
@@ -21,16 +21,15 @@ const server = app.listen('3000', function() {
     console.log('Application run like success : ' + new Date());
 });
 
-/*app.io = require('socket.io')(server);
+app.io = require('socket.io')(server);
 
 const socketNeedVals = {
     cookie: cookie,
     cookieParser: cookieParser,
     sessionStore: sessionStore,
     io: app.io,
-    co: app.co,
 }
-SocketManager(socketNeedVals);*/
+SocketManager(socketNeedVals);
 
 app.use(session({
     secret: 'ADb-CDE-pODs',

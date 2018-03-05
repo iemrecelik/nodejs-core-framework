@@ -1,0 +1,26 @@
+{% extends "Users/index.html.njk" %}
+
+{% block container %}
+	
+	<table>
+		{% for row in lists %}
+		<tr>
+			<td>{{ row.name }}</td>
+			<td>{{ row.surname }}</td>
+			<td><a href="/user/{{ row._id }}/update">Düzenle</a></td>
+		</tr>
+		{% endfor %}
+	</table>
+
+	<br/>
+	<br/>
+
+	{# cheat #}
+	{% include "Users/cheat.html.njk" %}
+
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/public/js/main-users.js"></script>
+{% endblock %}

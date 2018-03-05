@@ -7,18 +7,13 @@
 {% endblock %}
 
 {% block body %}
-<div class="container bootstrap snippet">
+<div class="container">
 
-	<div class="tile tile-alt row" id="messages-main">
-		{# form #}
-		{% include "Users/Forms/create_form.html.njk" %}
-
-		{# cheat #}
-		{% include "Users/cheat.html.njk" %}
-    </div>{# #messages-main end #}
+	{% block container %}{% endblock %}
+	
 </div>
 {% endblock %}
 
 {% block javascripts %}
-<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="/public/js/main-users.js"></script>
 {% endblock %}

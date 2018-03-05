@@ -2,3 +2,7 @@ label{
 	width: 100px;
 	text-align: right;
 }
+
+div.cheatInput{
+	border:1px solid #000;
+}

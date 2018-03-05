@@ -4,15 +4,25 @@ class UsersController extends Controller{
 
 	index(req, res){
 
-		let validInfo = req.flash('validInfo')[0];
-		
-		res.render('Users/index', {
-			validInfo: validInfo,
-			csrfToken: req.csrfToken(),
+		Users.find((err, data) => {
+
+			res.render('Users/lists', {
+				lists: data,
+			});	
 		});
 	}
 
-	async createUser(req, res){
+	createUser(req, res){
+
+		let validInfo = req.flash('validInfo')[0];
+		
+		res.render('Users/create', {
+			validInfo: validInfo,
+			csrfToken: req.csrfToken(),
+		});	
+	}
+
+	async createUserPost(req, res){
 		
 		let post = req.body;
 		let validSchema = this.getValidSchema('users');
@@ -23,27 +33,39 @@ class UsersController extends Controller{
 		if(validInfo.errorSt === false){
 
 			try{
-				let password = this.crypto(validInfo.val.password);		
-				delete validInfo.val.password;
-				delete validInfo.rawVal.password;
+				validInfo.val.password = this.crypto(validInfo.val.password);		
 
 				await Users.create(validInfo.val);
+
+				delete validInfo.val;
+				delete validInfo.rawVal;
 
 				validInfo.succeed = 'Kullanıcı başarıyla kaydedildi.';
 
 			}catch(err){
 				console.log(err)
-			}
-			
-			
-			
+			}//end try
 		}//end if
 
 		req.flash('validInfo', validInfo);
-		res.redirect('/user');
+		res.redirect('/user/create');
 	}
 
-	async updateSettings(req, res){
+	updateUser(req, res){
+
+		let validInfo = req.flash('validInfo')[0];
+
+		Users.findOne({_id: req.params.id}, (err, data) => {
+
+			res.render('Users/update', {
+				validInfo: validInfo,
+				userData: data,
+				csrfToken: req.csrfToken(),
+			});		
+		})
+	}
+
+	async updateUserPost(req, res){
 		
 		let post = req.body;
 		let validSchema = this.getValidSchema('users');
@@ -53,15 +75,15 @@ class UsersController extends Controller{
 		
 		if(validInfo.errorSt === false){
 			
-			let password = this.crypto(validInfo.val.password);		
+			let password = this.crypto(validInfo.val.password);
 			delete validInfo.val.password;
 			delete validInfo.rawVal.password;
 
-			await UsersInfo.findOne({ user_id: req.session.user._id, password: password}, (err, data) => {
-				
+			await Users.findOne({ _id: req.params.id, password: password}, (err, data) => {
+
 				if(data){
-					UsersInfo.updateOne(
-						{ user_id: req.session.user._id },
+					Users.updateOne(
+						{ _id: req.params.id },
 						{ $set: validInfo.val },
 						(err, data) => {}
 					)
@@ -76,8 +98,7 @@ class UsersController extends Controller{
 		}//end if
 
 		req.flash('validInfo', validInfo);
-		req.flash('navTabAct', 'settings')
-		res.redirect('/profile');
+		res.redirect(`/user/${req.params.id}/update`);
 	}
 
 	async updateProfileImg(req, res){
@@ -86,7 +107,7 @@ class UsersController extends Controller{
 		let file = req.file;
 
 		let regex = /png|jpeg|jpg/;
-		
+
 		if(!file)
 			error = 'Please choose a file';
 		else if(!regex.test(file.mimetype))
@@ -101,18 +122,22 @@ class UsersController extends Controller{
 				file: file.buffer, filt: 'profileL', imgExt: file.mimetype.match(/[^\/]+$/)[0]
 			});
 
-			let avatar = filtImgInfoLProm.imgName.match(/\/public\/.+/)[0];
+			let profileImg = filtImgInfoLProm.imgName.match(/\/public\/.+/)[0];
 
-			Users.updateOne({_id: req.session.user._id}, {$set: {avatar: avatar}}).exec();
-
-			ImageFilter.deleteImg(req.session.user.avatar);
-			req.session.user.avatar = avatar;
-
+			await Users.findOneAndUpdate(
+				{ _id: req.params.id },
+				{ $set: {profileImg: profileImg} },
+				(err, data) => {
+					if(err) console.log(err);
+					ImageFilter.deleteImg(data.profileImg);
+				}
+			)
+			
 			success = 'Successed upload the file';
 		}
 
 		req.flash('validInfo', {errorUpload: error, successUpload: success});
-		res.redirect('/profile');
+		res.redirect(`/user/${req.params.id}/update`);
 	}
 }
 

@@ -5,9 +5,6 @@ const crypto = require('crypto');
 module.exports = class imageFilter{
 	
 	constructor(filters){
-		this.defaultImgs = ['avatar0.png','avatar1.png',
-							'avatar2.png','avatar3.png',
-							'avatar4.png'];
 		
 		this.fileConfig = {};
 		this.fileConfig.size = 1000000;
@@ -89,13 +86,13 @@ module.exports = class imageFilter{
 		}
 	};
 
-	deleteImg(imgPath){
-
-		if(this.defaultImgs.indexOf(imgPath.match(/[^\/]+$/)[0]) < 0){
+	deleteImg(imgPath = null){
+		
+		if(imgPath){
 			
 			fs.unlink(path.join(__defined.baseUrl, imgPath), (err) => {
 				if (err) throw err;
-			});
+			});	
 		}
 	}
 
